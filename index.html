@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <style>
+        .emoji-card {
+            width: 8rem;
+            height: 8rem;;
+        }
+
+        .emoji-text {
+            font-size: 2em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app" class="container">
+
+        <div class="mb-3 mt-3 w-100 text-center">
+            <p><input type="text" class="form-control" placeholder="Search" v-model="searchText"></p>
+            <p><input type="checkbox" class="form-input-check" v-model="hideNewEmojis"> Hide new emojis</p>
+            <hr>
+            <p class="small">Click an emoji to copy it to clipboard</p>
+          </div>
+  
+        <div class="d-flex flex-wrap justify-content-center">
+            <div v-for="emoji in emojis">
+                <div class="card emoji-card overflow-hidden bg-light m-2"  v-if="!(emoji.shortName.includes('⊛') && hideNewEmojis) && emoji.shortName.toLowerCase().includes(searchText.toLowerCase())">
+                    <a class="stretched-link" href="#" @click="copyToClipboard(emoji.emoji)"></a>
+                    <div class="card-header text-center align-items-center">
+                        <span class="emoji-text mb-3">
+                            {{ emoji.emoji }}
+                        </span>
+                    </div>
+                    <div class="card-body pt-0 small text-center align-middle">
+                        {{ emoji.shortName }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const vueApp = {
+
+            data() {
+                return {
+                    emojis: [],
+                    searchText: "",
+                    hideNewEmojis: true
+                }
+            },
+
+            methods: {
+                fetchJson() {
+                    fetch("emojis.json")
+                        .then( (httpResponse) => httpResponse.json() )
+                        .then( (responseData) => { this.emojis = responseData } )
+                },
+
+                copyToClipboard(textToCopy) {
+                    navigator.clipboard.writeText(textToCopy)
+                }
+            },
+
+            mounted() {
+                this.fetchJson()
+            }
+
+        }
+
+        app = Vue.createApp(vueApp)
+        vm = app.mount("#app")
+    </script>
+</body>
+
+</html>
