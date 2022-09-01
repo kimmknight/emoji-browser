@@ -35,20 +35,28 @@
             <p><input type="text" class="form-control" placeholder="Search" v-model="searchText"></p>
             <p><input type="checkbox" class="form-input-check" v-model="hideNewEmojis"> Hide new emojis</p>
             <hr>
+        </div>
+
+        <div class="text-center" v-if="!loaded">
+            <div class="spinner-border text-warning align-middle" role="status"></div>
+            <span class="ms-3 align-middle">Loading...</span>
+        </div>
+
+        <div class="text-center" v-if="loaded">
             <p class="small">Click an emoji to copy it to clipboard</p>
-          </div>
-  
-        <div class="d-flex flex-wrap justify-content-center">
-            <div v-for="emoji in emojis">
-                <div class="card emoji-card overflow-hidden bg-light m-2"  v-if="!(emoji.shortName.includes('⊛') && hideNewEmojis) && emoji.shortName.toLowerCase().includes(searchText.toLowerCase())">
-                    <a class="stretched-link" href="#" @click="copyToClipboard(emoji.emoji)"></a>
-                    <div class="card-header text-center align-items-center">
-                        <span class="emoji-text mb-3">
-                            {{ emoji.emoji }}
-                        </span>
-                    </div>
-                    <div class="card-body pt-0 small text-center align-middle">
-                        {{ emoji.shortName }}
+            <div class="d-flex flex-wrap justify-content-center">
+                
+                <div v-for="emoji in emojis">
+                    <div class="card emoji-card overflow-hidden bg-light m-2"  v-if="!(emoji.shortName.includes('⊛') && hideNewEmojis) && emoji.shortName.toLowerCase().includes(searchText.toLowerCase())">
+                        <a class="stretched-link" href="#" @click="copyToClipboard(emoji.emoji)"></a>
+                        <div class="card-header text-center align-items-center">
+                            <span class="emoji-text mb-3">
+                                {{ emoji.emoji }}
+                            </span>
+                        </div>
+                        <div class="card-body pt-0 small text-center align-middle">
+                            {{ emoji.shortName }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,6 +68,7 @@
 
             data() {
                 return {
+                    loaded: false,
                     emojis: [],
                     searchText: "",
                     hideNewEmojis: true
@@ -70,7 +79,10 @@
                 fetchJson() {
                     fetch("emojis.json")
                         .then( (httpResponse) => httpResponse.json() )
-                        .then( (responseData) => { this.emojis = responseData } )
+                        .then( (responseData) => {
+                            this.emojis = responseData
+                            this.loaded = true
+                        } )
                 },
 
                 copyToClipboard(textToCopy) {
