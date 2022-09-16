@@ -27,6 +27,10 @@
         .emoji-text {
             font-size: 2em;
         }
+
+        .pointer {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -50,7 +54,7 @@
                 
                 <div v-for="emoji in emojis">
                     <div class="card emoji-card overflow-hidden bg-light m-2"  v-if="!(emoji.shortName.includes('⊛') && hideNewEmojis) && emoji.shortName.toLowerCase().includes(searchText.toLowerCase())">
-                        <a class="stretched-link" href="#" @click="copyToClipboard(emoji.emoji)"></a>
+                        <a class="stretched-link pointer" @click="copyToClipboard(emoji.emoji)"></a>
                         <div class="card-header text-center align-items-center">
                             <span class="emoji-text mb-3">
                                 {{ emoji.emoji }}
