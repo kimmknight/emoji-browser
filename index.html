@@ -36,7 +36,13 @@
     <body>
         <div id="app" class="container">
             <div class="mb-3 mt-3 w-100 text-center border-bottom">
-                <p><input type="text" class="form-control" placeholder="Search" v-model="searchText" /></p>
+                <p>
+                    <div class="input-group position-relative d-inline-flex align-items-center">
+                        <input type="text" class="form-control position-relative" placeholder="Search" v-model="searchText" />
+                        <span class="position-absolute btn-close small" style="right: 10px; cursor: pointer; z-index: 100;" @click="searchText = ''">
+                        </span>
+                    </div>
+                </p>
                 <p><input type="checkbox" class="form-input-check" id="hide-new-emojis-checkbox" v-model="hideNewEmojis" /> <label for="hide-new-emojis-checkbox">Hide new emojis</label></p>
             </div>
 
