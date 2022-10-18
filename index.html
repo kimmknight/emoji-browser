@@ -48,7 +48,7 @@
             <div class="text-center" v-if="loaded">
                 <p class="small">Click an emoji to copy it to clipboard</p>
                 <div class="d-flex flex-wrap justify-content-center">
-                    <div v-for="emoji in emojis">
+                    <div v-for="emoji in emojis" :key="emoji.shortName">
                         <div class="card emoji-card overflow-hidden bg-light m-2" v-if="!(emoji.shortName.includes('⊛') && hideNewEmojis) && emoji.shortName.toLowerCase().includes(searchText.toLowerCase())">
                             <a class="stretched-link pointer" @click="copyToClipboard(emoji.emoji)"></a>
                             <div class="card-header text-center align-items-center">
